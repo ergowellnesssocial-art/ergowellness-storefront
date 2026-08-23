@@ -28,10 +28,10 @@ async function fetchAPI(query: string, { variables }: { variables?: any } = {}) 
 }
 
 // Fetch all WooCommerce products
-export async function getAllProducts(search: string = "") {
+export async function getAllProducts(search: string = "", categoryIn: string = "") {
   const data = await fetchAPI(`
-    query AllProducts($search: String) {
-      products(first: 20, where: { search: $search }) {
+    query AllProducts($search: String, $categoryIn: [String]) {
+      products(first: 150, where: { search: $search, categoryIn: $categoryIn }) {
         nodes {
           id
           databaseId
@@ -54,7 +54,7 @@ export async function getAllProducts(search: string = "") {
       }
     }
   `, {
-    variables: { search: search || "" }
+    variables: { search: search || "", categoryIn: categoryIn ? [categoryIn] : null }
   });
 
   return data?.products?.nodes || [];
@@ -170,4 +170,19 @@ export async function getPostBySlug(slug: string) {
   });
 
   return data?.post || null;
+}
+
+export async function getProductCategories() {
+  const data = await fetchAPI(`
+    query GetCategories {
+      productCategories(first: 50, where: { hideEmpty: true }) {
+        nodes {
+          name
+          slug
+          count
+        }
+      }
+    }
+  `);
+  return data?.productCategories?.nodes || [];
 }
