@@ -11,17 +11,36 @@ export default async function Home() {
   const bestSellers = allProducts.slice(0, 4);
 
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'ErgoWellness',
-    url: 'https://www.getergowellness.com',
-    logo: 'https://www.getergowellness.com/icon.svg',
-    description: 'Premium ergonomic desk accessories and posture correctors designed to relieve back and neck pain.',
-    contactPoint: {
-      '@type': 'ContactPoint',
-      email: 'support@getergowellness.com',
-      contactType: 'customer support'
-    }
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.getergowellness.com/#organization",
+        "name": "ErgoWellness",
+        "url": "https://www.getergowellness.com/"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.getergowellness.com/#website",
+        "url": "https://www.getergowellness.com/",
+        "name": "ErgoWellness",
+        "publisher": {
+          "@id": "https://www.getergowellness.com/#organization"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://www.getergowellness.com/#webpage",
+        "url": "https://www.getergowellness.com/",
+        "name": "Ergonomic Products for Better Posture & Desk Comfort | ErgoWellness",
+        "isPartOf": {
+          "@id": "https://www.getergowellness.com/#website"
+        },
+        "about": {
+          "@id": "https://www.getergowellness.com/#organization"
+        }
+      }
+    ]
   };
 
   return (
@@ -42,14 +61,10 @@ export default async function Home() {
               </span>
             </h2>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight">
-              Ergonomic Posture Correctors & <br className="hidden sm:block"/>
-              <span className="text-brand-primary relative">
-                Desk Accessories.
-                <svg className="absolute w-full h-3 -bottom-1 left-0 text-yellow-300 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none"/></svg>
-              </span>
+              Ergonomic Products for Better Posture & Desk Comfort
             </h1>
             <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0">
-              Fix your posture and stop the pain. Alleviate neck strain and lower back pain with our clinically backed ergonomic solutions for desk workers.
+              ErgoWellness offers ergonomic products designed to support better posture, comfortable desk work and a more supportive workspace. Explore posture correctors, ergonomic mice, lumbar support, seat cushions and other desk accessories designed for everyday work and home-office environments.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-6 justify-center lg:justify-start">
               <Link href="/shop" className="bg-brand-primary hover:bg-brand-dark text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all text-center flex items-center justify-center">

@@ -9,18 +9,361 @@ import { Metadata } from 'next';
 
 export const revalidate = 15;
 
-// Generate Dynamic SEO Meta Tags based on the WooCommerce Product
+interface ProductSeoInfo {
+  metaTitle: string;
+  metaDescription: string;
+  h1: string;
+  firstParagraph: string;
+  category: string;
+  jsonLdGraph?: any;
+}
+
+const SPECIFIC_SEO_CONFIG: Record<string, ProductSeoInfo> = {
+  "ergowellness-smart-posture-corrector-vibration-alert": {
+    metaTitle: "Smart Posture Corrector with Vibration Alert | ErgoWellness",
+    metaDescription: "Shop the ErgoWellness Smart Posture Corrector with vibration alert. A discreet, adjustable wearable designed to provide gentle posture reminders throughout your day.",
+    h1: "Smart Posture Corrector with Vibration Alert",
+    firstParagraph: "The ErgoWellness Smart Posture Corrector with Vibration Alert is a discreet, adjustable wearable designed to increase posture awareness throughout the day. A gentle vibration provides a reminder when your posture changes, making it suitable for desk work, home offices, studying and everyday activities.",
+    category: "Posture Correctors",
+    jsonLdGraph: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Brand",
+          "@id": "https://www.getergowellness.com/#brand",
+          "name": "ErgoWellness",
+          "url": "https://www.getergowellness.com/"
+        },
+        {
+          "@type": "Product",
+          "@id": "https://www.getergowellness.com/shop/ergowellness-smart-posture-corrector-vibration-alert#product",
+          "name": "ErgoWellness Smart Posture Corrector with Vibration Alert",
+          "url": "https://www.getergowellness.com/shop/ergowellness-smart-posture-corrector-vibration-alert",
+          "description": "The ErgoWellness Smart Posture Corrector with Vibration Alert is a discreet, adjustable wearable designed to provide gentle posture reminders throughout the day.",
+          "brand": {
+            "@id": "https://www.getergowellness.com/#brand"
+          },
+          "category": "Posture Correctors",
+          "material": "Polyester",
+          "additionalProperty": [
+            {
+              "@type": "PropertyValue",
+              "name": "Alert Type",
+              "value": "Vibration"
+            },
+            {
+              "@type": "PropertyValue",
+              "name": "Available Sizes",
+              "value": "S, M, L, XL"
+            }
+          ],
+          "offers": {
+            "@type": "Offer",
+            "url": "https://www.getergowellness.com/shop/ergowellness-smart-posture-corrector-vibration-alert",
+            "priceCurrency": "USD",
+            "price": "50.00",
+            "availability": "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition",
+            "seller": {
+              "@id": "https://www.getergowellness.com/#brand"
+            }
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.getergowellness.com/shop/ergowellness-smart-posture-corrector-vibration-alert#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getergowellness.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Shop",
+              "item": "https://www.getergowellness.com/shop/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Posture Correctors",
+              "item": "https://www.getergowellness.com/shop"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "Smart Posture Corrector with Vibration Alert",
+              "item": "https://www.getergowellness.com/shop/ergowellness-smart-posture-corrector-vibration-alert"
+            }
+          ]
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.getergowellness.com/shop/ergowellness-smart-posture-corrector-vibration-alert#webpage",
+          "url": "https://www.getergowellness.com/shop/ergowellness-smart-posture-corrector-vibration-alert",
+          "name": "Smart Posture Corrector with Vibration Alert | ErgoWellness",
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://www.getergowellness.com/#website"
+          },
+          "mainEntity": {
+            "@id": "https://www.getergowellness.com/shop/ergowellness-smart-posture-corrector-vibration-alert#product"
+          },
+          "breadcrumb": {
+            "@id": "https://www.getergowellness.com/shop/ergowellness-smart-posture-corrector-vibration-alert#breadcrumb"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.getergowellness.com/#website",
+          "url": "https://www.getergowellness.com/",
+          "name": "ErgoWellness",
+          "publisher": {
+            "@id": "https://www.getergowellness.com/#brand"
+          }
+        }
+      ]
+    }
+  },
+  "ergowellness-pro-vertical-mouse-wrist-pain-relief": {
+    metaTitle: "Ergonomic Vertical Mouse for Comfortable Computing | ErgoWellness",
+    metaDescription: "Shop the ErgoWellness Pro Vertical Mouse, an ergonomic mouse designed for a more natural hand position and comfortable everyday computer use at home or work.",
+    h1: "ErgoWellness Pro Vertical Ergonomic Mouse",
+    firstParagraph: "The ErgoWellness Pro Vertical Ergonomic Mouse is designed to support a more natural hand and wrist position while you work, browse or study. Its vertical design provides an alternative to a traditional mouse, making it a practical ergonomic choice for everyday computer use at home or in the office.",
+    category: "Ergonomic Mice",
+    jsonLdGraph: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Brand",
+          "@id": "https://www.getergowellness.com/#brand",
+          "name": "ErgoWellness",
+          "url": "https://www.getergowellness.com/"
+        },
+        {
+          "@type": "Product",
+          "@id": "https://www.getergowellness.com/shop/ergowellness-pro-vertical-mouse-wrist-pain-relief#product",
+          "name": "ErgoWellness Pro Vertical Ergonomic Mouse",
+          "url": "https://www.getergowellness.com/shop/ergowellness-pro-vertical-mouse-wrist-pain-relief",
+          "description": "The ErgoWellness Pro Vertical Ergonomic Mouse is designed to provide an alternative to a traditional mouse with a vertical design intended to support a more natural hand position during everyday computer use.",
+          "brand": {
+            "@id": "https://www.getergowellness.com/#brand"
+          },
+          "category": "Ergonomic Mice",
+          "offers": {
+            "@type": "Offer",
+            "url": "https://www.getergowellness.com/shop/ergowellness-pro-vertical-mouse-wrist-pain-relief",
+            "priceCurrency": "USD",
+            "price": "35.00",
+            "availability": "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition",
+            "seller": {
+              "@id": "https://www.getergowellness.com/#brand"
+            }
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.getergowellness.com/shop/ergowellness-pro-vertical-mouse-wrist-pain-relief#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getergowellness.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Shop",
+              "item": "https://www.getergowellness.com/shop/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Ergonomic Mice",
+              "item": "https://www.getergowellness.com/shop"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "ErgoWellness Pro Vertical Ergonomic Mouse",
+              "item": "https://www.getergowellness.com/shop/ergowellness-pro-vertical-mouse-wrist-pain-relief"
+            }
+          ]
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.getergowellness.com/shop/ergowellness-pro-vertical-mouse-wrist-pain-relief#webpage",
+          "url": "https://www.getergowellness.com/shop/ergowellness-pro-vertical-mouse-wrist-pain-relief",
+          "name": "Ergonomic Vertical Mouse for Comfortable Computing | ErgoWellness",
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://www.getergowellness.com/#website"
+          },
+          "mainEntity": {
+            "@id": "https://www.getergowellness.com/shop/ergowellness-pro-vertical-mouse-wrist-pain-relief#product"
+          },
+          "breadcrumb": {
+            "@id": "https://www.getergowellness.com/shop/ergowellness-pro-vertical-mouse-wrist-pain-relief#breadcrumb"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.getergowellness.com/#website",
+          "url": "https://www.getergowellness.com/",
+          "name": "ErgoWellness",
+          "publisher": {
+            "@id": "https://www.getergowellness.com/#brand"
+          }
+        }
+      ]
+    }
+  },
+  "ergowellness-premium-aluminum-laptop-riser": {
+    metaTitle: "Aluminium Laptop Stand & Adjustable Laptop Riser | ErgoWellness",
+    metaDescription: "Shop the ErgoWellness Premium Aluminium Laptop Stand, featuring an adjustable angle, folding design, heat-dissipating construction and compatibility with laptops and tablets up to 15 inches.",
+    h1: "Premium Aluminium Laptop Stand & Adjustable Laptop Riser",
+    firstParagraph: "The ErgoWellness Premium Aluminium Laptop Stand is a foldable, adjustable laptop riser designed to create a more comfortable and organised workspace. Made from aluminium alloy, it features an adjustable angle, open design for heat dissipation and compatibility with laptops and tablets up to 15 inches.",
+    category: "Laptop Stands",
+    jsonLdGraph: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Brand",
+          "@id": "https://www.getergowellness.com/#brand",
+          "name": "ErgoWellness",
+          "url": "https://www.getergowellness.com/"
+        },
+        {
+          "@type": "Product",
+          "@id": "https://www.getergowellness.com/shop/ergowellness-premium-aluminum-laptop-riser#product",
+          "name": "Premium Aluminium Laptop Stand & Adjustable Laptop Riser",
+          "url": "https://www.getergowellness.com/shop/ergowellness-premium-aluminum-laptop-riser",
+          "description": "The ErgoWellness Premium Aluminium Laptop Stand is a foldable, adjustable laptop riser designed to create a more comfortable and organised workspace.",
+          "brand": {
+            "@id": "https://www.getergowellness.com/#brand"
+          },
+          "category": "Laptop Stands",
+          "offers": {
+            "@type": "Offer",
+            "url": "https://www.getergowellness.com/shop/ergowellness-premium-aluminum-laptop-riser",
+            "priceCurrency": "USD",
+            "price": "45.00",
+            "availability": "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition",
+            "seller": {
+              "@id": "https://www.getergowellness.com/#brand"
+            }
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.getergowellness.com/shop/ergowellness-premium-aluminum-laptop-riser#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getergowellness.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Shop",
+              "item": "https://www.getergowellness.com/shop/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Laptop Stands",
+              "item": "https://www.getergowellness.com/shop"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "Premium Aluminium Laptop Stand & Adjustable Laptop Riser",
+              "item": "https://www.getergowellness.com/shop/ergowellness-premium-aluminum-laptop-riser"
+            }
+          ]
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.getergowellness.com/shop/ergowellness-premium-aluminum-laptop-riser#webpage",
+          "url": "https://www.getergowellness.com/shop/ergowellness-premium-aluminum-laptop-riser",
+          "name": "Aluminium Laptop Stand & Adjustable Laptop Riser | ErgoWellness",
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://www.getergowellness.com/#website"
+          },
+          "mainEntity": {
+            "@id": "https://www.getergowellness.com/shop/ergowellness-premium-aluminum-laptop-riser#product"
+          },
+          "breadcrumb": {
+            "@id": "https://www.getergowellness.com/shop/ergowellness-premium-aluminum-laptop-riser#breadcrumb"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.getergowellness.com/#website",
+          "url": "https://www.getergowellness.com/",
+          "name": "ErgoWellness",
+          "publisher": {
+            "@id": "https://www.getergowellness.com/#brand"
+          }
+        }
+      ]
+    }
+  }
+};
+
+function getSeoForProduct(slug: string, product: any): ProductSeoInfo {
+  for (const [key, seo] of Object.entries(SPECIFIC_SEO_CONFIG)) {
+    if (slug === key || slug.includes(key) || key.includes(slug)) {
+      return seo;
+    }
+  }
+
+  if (slug.includes('posture-corrector') || slug.includes('vibration')) {
+    return SPECIFIC_SEO_CONFIG['ergowellness-smart-posture-corrector-vibration-alert'];
+  }
+  if (slug.includes('vertical-mouse') || slug.includes('mouse')) {
+    return SPECIFIC_SEO_CONFIG['ergowellness-pro-vertical-mouse-wrist-pain-relief'];
+  }
+  if (slug.includes('laptop') || slug.includes('riser') || slug.includes('stand')) {
+    return SPECIFIC_SEO_CONFIG['ergowellness-premium-aluminum-laptop-riser'];
+  }
+
+  const cleanDesc = product?.description ? product.description.replace(/<[^>]*>?/gm, '').trim() : '';
+  const firstSentence = cleanDesc ? (cleanDesc.split('.')[0] + '.') : `${product?.name || 'This product'} is designed to support better workplace posture and ergonomics.`;
+
+  return {
+    metaTitle: `${product?.name || 'Ergonomic Product'} | ErgoWellness`,
+    metaDescription: cleanDesc.substring(0, 155) || `Shop ${product?.name || 'ergonomic products'} at ErgoWellness for superior posture support and desk comfort.`,
+    h1: product?.name || 'Ergonomic Product',
+    firstParagraph: firstSentence,
+    category: "Ergonomic Gear"
+  };
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
   const product = await getProductBySlug(resolvedParams.slug);
   
-  if (!product) return { title: 'Product Not Found' };
+  if (!product) return { title: 'Product Not Found | ErgoWellness' };
+
+  const seo = getSeoForProduct(resolvedParams.slug, product);
 
   return {
-    title: `${product.name} | ErgoWellness US/UK`,
-    description: product.description ? product.description.replace(/<[^>]*>?/gm, '').substring(0, 155) : 'Shop ergonomic solutions at ErgoWellness.',
+    title: seo.metaTitle,
+    description: seo.metaDescription,
     openGraph: {
-      title: product.name,
+      title: seo.metaTitle,
+      description: seo.metaDescription,
+      url: `https://www.getergowellness.com/shop/${resolvedParams.slug}`,
+      siteName: "ErgoWellness",
       images: [product.image?.sourceUrl || '/hero-product.jpg'],
     },
   };
@@ -34,11 +377,12 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
     notFound();
   }
 
+  const seo = getSeoForProduct(resolvedParams.slug, product);
+
   const createMarkup = (html: string) => {
     return { __html: html };
   };
 
-  // Extract images from the CJ Dropshipping description HTML
   const imgRegex = /<img[^>]+src=["']([^"']+)["'][^>]*>/gi;
   const galleryImages: string[] = [];
   let match;
@@ -48,18 +392,16 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
     }
   }
 
-  // Remove all images from the description text for a clean, professional look
   const cleanDescription = product.description 
     ? product.description.replace(/<img[^>]*>/gi, '') 
     : '';
 
-  // Structured Data (JSON-LD) for Google Rich Snippets
-  const jsonLd = {
+  const jsonLd = seo.jsonLdGraph || {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: product.name,
-    image: product.image?.sourceUrl || 'https://ergowellness.com/hero-product.jpg',
-    description: product.description ? product.description.replace(/<[^>]*>?/gm, '') : '',
+    name: seo.h1,
+    image: product.image?.sourceUrl || 'https://www.getergowellness.com/hero-product.jpg',
+    description: seo.metaDescription,
     offers: {
       '@type': 'Offer',
       priceCurrency: 'USD',
@@ -79,7 +421,6 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
 
   return (
     <div className="flex flex-col font-sans w-full">
-      {/* Inject SEO Schema invisibly into the head */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -93,7 +434,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
             <span>/</span>
             <Link href="/shop" className="hover:text-brand-primary">Shop</Link>
             <span>/</span>
-            <span className="text-slate-900 font-medium">{product.name}</span>
+            <span className="text-slate-900 font-medium">{seo.h1}</span>
           </div>
         </div>
       </div>
@@ -105,7 +446,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
             {/* Interactive Product Image Gallery */}
             <ProductGallery 
               mainImage={product.image?.sourceUrl || "/hero-product.jpg"} 
-              altText={product.image?.altText || product.name} 
+              altText={product.image?.altText || seo.h1} 
               galleryImages={galleryImages} 
             />
 
@@ -115,14 +456,22 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
                 <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
                 In Stock & Ready to Ship
               </span>
-              <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 leading-tight">
-                {product.name}
+              
+              <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3 leading-tight">
+                {seo.h1}
               </h1>
               
-              <div className="flex items-center mb-6">
+              <div className="flex items-center mb-4">
                 <div className="flex text-yellow-400 text-lg">★★★★★</div>
                 <span className="text-slate-600 text-sm ml-2 font-medium underline cursor-pointer">4.8 (124 Reviews)</span>
               </div>
+
+              {/* SEO First Paragraph right under H1 & Rating */}
+              {seo.firstParagraph && (
+                <p className="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
+                  {seo.firstParagraph}
+                </p>
+              )}
 
               <ProductOptions product={product} />
             </div>
@@ -140,12 +489,12 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
           )}
         </div>
 
-          {/* Product Reviews Section */}
-          <div className="mt-16">
-            <ProductReviews productSlug={product.slug} />
+        {/* Product Reviews Section */}
+        <div className="mt-16">
+          <ProductReviews productSlug={product.slug} />
         </div>
 
-        {/* SEO FAQ Accordion Section (People Also Ask target) */}
+        {/* SEO FAQ Accordion Section */}
         <div className="max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl font-bold text-slate-900 mb-8 text-center">Frequently Asked Questions</h2>
           <div className="space-y-4">
