@@ -6,9 +6,15 @@ import { getAllProducts } from "@/lib/api";
 export const metadata: Metadata = {
   title: "Shop Ergonomic Solutions | ErgoWellness",
   description: "Browse our curated collection of clinically backed posture correctors and ergonomic desk accessories. Find your pain-relief solution today.",
+  alternates: {
+    canonical: 'https://www.getergowellness.com/shop'
+  },
   openGraph: {
     title: "Shop Ergonomic Solutions | ErgoWellness",
     description: "Browse our curated collection of clinically backed posture correctors and ergonomic desk accessories.",
+    url: "https://www.getergowellness.com/shop",
+    siteName: "ErgoWellness",
+    type: "website"
   }
 };
 
@@ -18,18 +24,56 @@ export default async function Shop({ searchParams }: { searchParams: Promise<{ q
   const resolvedParams = await searchParams;
   const searchQuery = resolvedParams.q || "";
 
-  // Fetch real products from WooCommerce via GraphQL
   const products = await getAllProducts(searchQuery);
+
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": "https://www.getergowellness.com/shop/#collection",
+    "url": "https://www.getergowellness.com/shop",
+    "name": "Ergonomic Solutions & Posture Gear Catalog | ErgoWellness",
+    "description": "Browse clinically backed posture correctors, ergonomic mice, lumbar support cushions, and desk accessories.",
+    "isPartOf": {
+      "@type": "WebSite",
+      "@id": "https://www.getergowellness.com/#website",
+      "url": "https://www.getergowellness.com/",
+      "name": "ErgoWellness"
+    },
+    "mainEntity": {
+      "@type": "OfferCatalog",
+      "name": "Ergonomic Desk & Posture Products",
+      "itemListElement": products.map((prod: any, idx: number) => ({
+        "@type": "ListItem",
+        "position": idx + 1,
+        "item": {
+          "@type": "Product",
+          "name": prod.name,
+          "url": `https://www.getergowellness.com/shop/${prod.slug || prod.databaseId}`,
+          "image": prod.image?.sourceUrl || "https://www.getergowellness.com/hero-product.jpg",
+          "offers": {
+            "@type": "Offer",
+            "priceCurrency": "USD",
+            "price": prod.price ? prod.price.replace(/[^0-9.]/g, '') : "0.00",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      }))
+    }
+  };
 
   return (
     <div className="flex flex-col font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
 
       {/* Shop Header */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">Ergonomic Solutions</h1>
+          <h1 className="text-4xl font-bold text-slate-900 mb-4">Ergonomic Solutions & Posture Gear</h1>
           <p className="text-lg text-slate-600 max-w-3xl">
-            Browse our curated collection of clinically backed posture correctors and ergonomic desk accessories. Find your pain-relief solution today.
+            Browse our curated collection of clinically backed posture correctors, lumbar cushions, vertical mice, and ergonomic desk accessories designed to stop pain and support comfortable work.
           </p>
         </div>
       </div>
@@ -70,7 +114,6 @@ export default async function Shop({ searchParams }: { searchParams: Promise<{ q
                   <h3 className="text-lg font-bold text-slate-900 mb-2 leading-tight group-hover:text-brand-primary transition-colors line-clamp-2">
                     {product.name}
                   </h3>
-                  {/* Safely stripping HTML from short description if needed, or just relying on title for grid */}
                   <div className="flex justify-between items-center mt-4">
                     <span className="text-xl font-extrabold text-slate-900">{product.price ? product.price.replace(/&nbsp;/g, ' ') : 'Free'}</span>
                     <span className="text-brand-primary font-medium text-sm">View Details →</span>

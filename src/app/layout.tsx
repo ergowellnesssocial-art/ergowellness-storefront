@@ -23,12 +23,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.getergowellness.com'),
-  title: "ErgoWellness | Ergonomic Posture Correctors & Desk Accessories",
-  description: "Shop top-rated ergonomic desk accessories, posture correctors, and lumbar support cushions to relieve back and neck pain. Free shipping in US & UK.",
+  title: "ErgoWellness™ | Shop Orthopedic Posture & Pain Relief Solutions",
+  description: "Shop clinically backed posture correctors, memory foam seat cushions, and ergonomic desk accessories. Free Express Shipping to US & UK. 30-Day Returns.",
   keywords: ["posture corrector", "ergonomic desk accessories", "neck pain relief", "lumbar support cushion", "tech neck corrector", "ergonomic posture correctors"],
   openGraph: {
-    title: "ErgoWellness | Ergonomic Posture Correctors & Desk Accessories",
-    description: "Shop top-rated ergonomic desk accessories, posture correctors, and lumbar support cushions to relieve back and neck pain.",
+    title: "ErgoWellness™ | Shop Orthopedic Posture & Pain Relief Solutions",
+    description: "Shop clinically backed posture correctors, memory foam seat cushions, and ergonomic desk accessories. Free Express Shipping to US & UK.",
     url: "https://www.getergowellness.com",
     siteName: "ErgoWellness",
     images: [

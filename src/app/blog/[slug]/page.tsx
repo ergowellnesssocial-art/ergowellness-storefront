@@ -10,16 +10,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const resolvedParams = await params;
   const post = await getPostBySlug(resolvedParams.slug);
   
-  if (!post) return { title: 'Post Not Found' };
+  if (!post) return { title: 'Post Not Found | ErgoWellness Blog' };
 
   const cleanExcerpt = post.excerpt ? post.excerpt.replace(/<[^>]*>?/gm, '').substring(0, 155) : '';
 
   return {
     title: `${post.title} | ErgoWellness Blog`,
     description: cleanExcerpt || 'Read the latest ergonomic tips and posture advice on the ErgoWellness blog.',
+    alternates: {
+      canonical: `https://www.getergowellness.com/blog/${resolvedParams.slug}`
+    },
     openGraph: {
       title: post.title,
       description: cleanExcerpt,
+      url: `https://www.getergowellness.com/blog/${resolvedParams.slug}`,
+      siteName: 'ErgoWellness',
+      type: 'article',
       images: [post.featuredImage?.node?.sourceUrl || '/hero-product.jpg'],
     },
   };
@@ -38,14 +44,71 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     return { __html: html };
   };
 
-  const formattedDate = new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  const formattedDate = new Date(post.date || new Date()).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
   const imageUrl = post.featuredImage?.node?.sourceUrl || "/hero-product.jpg";
+  const cleanExcerpt = post.excerpt ? post.excerpt.replace(/<[^>]*>?/gm, '').substring(0, 160) : '';
 
-  // Clean WordPress content slightly if needed, or just render it
-  const cleanContent = post.content || '';
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `https://www.getergowellness.com/blog/${post.slug}#article`,
+        "url": `https://www.getergowellness.com/blog/${post.slug}`,
+        "headline": post.title,
+        "description": cleanExcerpt,
+        "datePublished": post.date || new Date().toISOString(),
+        "dateModified": post.modified || post.date || new Date().toISOString(),
+        "mainEntityOfPage": `https://www.getergowellness.com/blog/${post.slug}`,
+        "image": imageUrl,
+        "author": {
+          "@type": "Organization",
+          "name": "ErgoWellness Editorial Team",
+          "url": "https://www.getergowellness.com/about"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "ErgoWellness",
+          "url": "https://www.getergowellness.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.getergowellness.com/icon.jpg"
+          }
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `https://www.getergowellness.com/blog/${post.slug}#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.getergowellness.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": "https://www.getergowellness.com/blog"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": post.title,
+            "item": `https://www.getergowellness.com/blog/${post.slug}`
+          }
+        ]
+      }
+    ]
+  };
 
   return (
     <div className="flex flex-col font-sans w-full">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
 
       <main className="flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         
@@ -54,7 +117,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           <Link href="/blog" className="text-brand-primary font-semibold text-sm uppercase tracking-wider mb-4 inline-block hover:underline">← Back to Blog</Link>
           <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">{post.title}</h1>
           <div className="flex items-center justify-center space-x-4 text-slate-500 text-sm">
-            <span>By ErgoWellness</span>
+            <span>By ErgoWellness Editorial Team</span>
             <span>•</span>
             <span>{formattedDate}</span>
           </div>
@@ -65,16 +128,16 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
            <Image src={imageUrl} alt={post.title} fill style={{ objectFit: 'cover' }} priority />
         </div>
 
-        {/* Article Content (Rendered directly from WP HTML) */}
+        {/* Article Content */}
         <article 
           className="prose prose-lg prose-slate max-w-none prose-a:text-brand-primary hover:prose-a:text-brand-dark prose-img:rounded-xl prose-img:shadow-sm"
-          dangerouslySetInnerHTML={createMarkup(cleanContent)}
+          dangerouslySetInnerHTML={createMarkup(post.content || '')}
         />
         
         {/* Author Bio (E-E-A-T Trust Signal) */}
         <div className="mt-16 bg-slate-50 border border-slate-200 rounded-2xl p-8 flex flex-col md:flex-row items-center md:items-start gap-6">
           <div className="w-24 h-24 rounded-full bg-brand-primary flex-shrink-0 flex items-center justify-center text-white text-2xl font-bold shadow-md">
-            EE
+            EW
           </div>
           <div className="text-center md:text-left">
             <h4 className="text-xl font-bold text-slate-900 mb-2 flex items-center justify-center md:justify-start">
